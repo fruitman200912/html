@@ -12,33 +12,72 @@
             image-rendering: auto
         }
 
-        .icon img {
-            width: 80px;
-            height: 80px;
+        .icon {
+            display: flex;
+            text-align: center;
+            height: 70px;
+            width: 70px;
+            user-select: none;
         }
 
-        .icon p {
-            vertical-align: middle;
-            text-align: center;
-            margin: 0;
+        .icon a {
+            display: inline-block;
+            cursor: default;
+            text-decoration: none;
+            cursor: default;
+        }
+
+        .icon a img {
+            display: block;
+            width: 55px;
+            height: 55px;
+        }
+
+        .icon a p {
+            display: inline block;
+            color: white;
+            text-shadow: 0 0 5px black;
+            font-weight: lighter;
+            font-size: 15px;
+            margin-top: 5px;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-    <table class="icon">
-        <tr>
-            <th>
-                <a href="https://www.google.co.kr/?client=safari&channel=mac_bm"><img
-                        src="Adobe Express - file.png"></a>
-            </th>
-        </tr>
-        <tr>
-            <td>
-                <p>chrome</p>
-            </td>
-        </tr>
-    </table>
+    <div class="icon">
+        <a href="https://www.google.co.kr/?client=safari&channel=mac_bm">
+            <img src="Adobe Express - file.png">
+            <p>chrome</p>
+        </a>
+    </div>
+
+    <script>
+        const icons = document.querySelectorAll(".icon");
+        let offsetX = 0;
+        let offsetY = 0;
+        let isDragging = false;
+
+        icons.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            offsetX = e.clientX - icons.offsetLeft;
+            offsetY = e.clientY - icons.offsetTop;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                icons.style.left = `${e.clientX - offsetX}px`;
+                icons.style.top = `${e.clientY - offsetY}px`;
+                icons.style.position = "absolute";
+            }
+        });
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+            icons.style.cursor = "grab";
+        });
+    </script>
 </body>
 
 </html>
