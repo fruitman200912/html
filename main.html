@@ -4,114 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>웹</title>
-    <style>
-        body {
-            background: url('background.png') no-repeat center fixed;
-            background-size: cover;
-            overflow: hidden;
-            image-rendering: auto;
-            z-index: 0;
-        }
-
-        .icon {
-            position: absolute;
-            display: flex;
-            text-align: center;
-            width: 70px;
-            user-select: none;
-            padding: 3px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .icon.selected {
-            background-color: rgb(0, 0, 255, 0.2);
-            border: rgb(0, 0, 255, 0.5) 1px solid;
-        }
-
-        .icon a {
-            text-decoration: none;
-        }
-
-        .icon img {
-            width: 55px;
-            height: 55px;
-            margin: 0 auto;
-            user-drag: none;
-            -webkit-user-drag: none;
-            padding: 0px;
-        }
-
-        .icon p {
-            color: white;
-            text-shadow: 0 0 5px black;
-            font-weight: lighter;
-            font-size: 15px;
-            margin-top: 5px;
-            text-decoration: none;
-            padding: 0px;
-        }
-
-        #Taskbar {
-            display: flex;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 35px;
-            background-color: rgba(0, 0, 0, 0.7);
-            align-items: center;
-        }
-
-        #Window_icon {
-            width: 20px;
-            height: 20px;
-            z-index: 1;
-            margin: 10px;
-        }
-
-        .Taskbar_icon {
-            width: 25px;
-            height: 25px;
-            z-index: 1;
-            margin: 10px;
-            cursor: default;
-        }
-
-        a {
-            all: nuset;
-            cursor: default;
-        }
-
-        #Search {
-            display: flex;
-            width: 250px;
-            height: 35px;
-            background-color: white;
-            z-index: 1;
-        }
-
-        #Search img {
-            height: 20px;
-            width: 20px;
-            margin: 7.5px;
-        }
-
-        #Search input {
-            height: auto;
-            width: 100%;
-            border: none;
-            outline: none;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="icon" style="top: 10px; left: 10px;">
-        <a href="https://www.google.co.kr/?client=safari&channel=mac_bm" draggable="false">
-            <img src="Adobe Express - file.png">
-            <p>chrome</p>
-        </a>
+        <img src="Adobe Express - file.png">
+        <p>chrome</p>
     </div>
 
     <div id="Taskbar">
@@ -125,67 +24,17 @@
         </a>
     </div>
 
-    <script>
-        const icons = document.querySelectorAll(".icon");
+    <div id="popupWindow">
+        <div id="popupHeader">
+            새 탭
+            <button id="popupClose">X</button>
+        </div>
+        <div id="popupContent">
+            내용
+        </div>
+    </div>
 
-        document.addEventListener("dblclick", (e) => {
-            if (!e.target.closest(".icon")) {
-                icons.forEach(i => i.classList.remove("selected"));
-            }
-        });
-
-        icons.forEach(icon => {
-            let isDragging = false;
-            let startX, startY;
-            let offsetX = 0, offsetY = 0;
-
-            const link = icon.querySelector("a");
-
-            icon.addEventListener("mousedown", (e) => {
-                startX = e.clientX;
-                startY = e.clientY;
-                offsetX = e.clientX - icon.offsetLeft;
-                offsetY = e.clientY - icon.offsetTop;
-                isDragging = true;
-                icon.classList.add("selected");
-            });
-
-            document.addEventListener("mousemove", (e) => {
-                if (isDragging) {
-                    icon.style.left = `${e.clientX - offsetX}px`;
-                    icon.style.top = `${e.clientY - offsetY}px`;
-                }
-            });
-
-            document.addEventListener("mouseup", (e) => {
-                if (isDragging) {
-                    isDragging = false;
-                    icon.classList.remove("selected");
-                }
-            });
-
-            icon.addEventListener("click", (e) => {
-                icons.forEach(i => i.classList.remove("selected"));
-                icon.classList.add("selected");
-                e.stopPropagation();
-            });
-
-            icon.addEventListener("dragstart", (e) => {
-                e.preventDefault();
-            });
-
-            link.addEventListener("click", (e) => {
-                e.preventDefault();
-            });
-
-            link.addEventListener("dblclick", (e) => {
-                const href = link.getAttribute("href")
-                if (href) {
-                    window.location.href = href;
-                }
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
