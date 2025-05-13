@@ -1,6 +1,37 @@
 const icons = document.querySelectorAll(".icon");
 const popup = document.getElementById("popupWindow");
-const closeBtn = document.getElementById("popupClose");
+const closeBtn = document.querySelectorAll(".popupClose");
+const popupHeader = document.getElementById("popupHeader");
+const taskbarIcon = document.querySelector(".Taskbar_icon");
+
+let isPopupDragging = false;
+let popupOffsetX = 0;
+let popupOffsetY = 0;
+
+taskbarIcon.addEventListener("click", (e) => {
+  popup.style.display = "block";
+  popup.style.left = "calc(50% - 200px)";
+  popup.style.top = "calc(50% - 150px)";
+  e.stopPropagation();
+});
+
+popupHeader.addEventListener("mousedown", (e) => {
+  isPopupDragging = true;
+  popupOffsetX = e.clientX - popup.offsetLeft;
+  popupOffsetY = e.clientY - popup.offsetTop;
+  e.preventDefault();
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (isPopupDragging) {
+    popup.style.left = `${e.clientX - popupOffsetX}px`;
+    popup.style.top = `${e.clientY - popupOffsetY}px`;
+  }
+});
+
+document.addEventListener("mouseup", (e) => {
+  isPopupDragging = false;
+});
 
 document.addEventListener("dblclick", (e) => {
   if (!e.target.closest(".icon")) {
@@ -10,12 +41,9 @@ document.addEventListener("dblclick", (e) => {
 
 icons.forEach(icon => {
   let isDragging = false;
-  let startX, startY;
   let offsetX = 0, offsetY = 0;
 
   icon.addEventListener("mousedown", (e) => {
-    startX = e.clientX;
-    startY = e.clientY;
     offsetX = e.clientX - icon.offsetLeft;
     offsetY = e.clientY - icon.offsetTop;
     isDragging = true;
@@ -29,10 +57,8 @@ icons.forEach(icon => {
     }
   });
 
-  document.addEventListener("mouseup", (e) => {
-    if (isDragging) {
-      isDragging = false;
-    }
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
   });
 
   icon.addEventListener("click", (e) => {
@@ -53,16 +79,20 @@ icons.forEach(icon => {
   });
 });
 
-closeBtn.addEventListener("click", () => {
-  popup.style.display = "none";
+closeBtn.forEach(btn => {
+  btn.addEventListener("click", () => {
+    popup.style.display = "none";
+  });
 });
 
-document.addEventListener("click", (e) => {
-  const isPopup = popup.contains(e.target);
-  const isIcon = [...document.querySelectorAll(".icon")].some(icon => icon.contains(e.target));
+popup.addEventListener("mousedown", (e) => {
+  isDraggingPopup = true;
+  popupOffsetX = e.clientX - popup.offsetLeft;
+  popupOffsetY = e.clientY - popup.offsetTop;
+});
 
-  if (!isPopup && !isIcon) {
-    popup.style.display = "none";
+document.addEventListener("dblclick", (e) => {
+  if (!e.target.closest(".icon")) {
     icons.forEach(i => i.classList.remove("selected"));
   }
 });
