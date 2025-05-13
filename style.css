@@ -187,11 +187,16 @@ a {
 }
 
 .popupClose {
-  background: none;
   border: none;
   color: #444;
   font-size: 16px;
   margin-left: auto;
+  border-radius: 100%;
+  background-color: transparent;
+}
+
+.popupClose:hover {
+  background-color: rgba(0, 157, 255, 0.187);
 }
 
 #popupBottom {
